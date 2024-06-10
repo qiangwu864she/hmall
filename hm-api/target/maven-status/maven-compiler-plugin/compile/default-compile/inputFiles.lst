@@ -1,0 +1,9 @@
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\client\CartClient.java
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\config\DefaultFeignConfig.java
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\dto\ItemDTO.java
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\fallback\ItemClientFallbackFactory.java
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\client\ItemClient.java
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\client\TradeClient.java
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\client\UserClient.java
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\interceptors\UserInfoInterceptor.java
+D:\code\hmall\hm-api\src\main\java\com\hmall\api\dto\OrderDetailDTO.java

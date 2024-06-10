@@ -1,0 +1,17 @@
+server:
+  port: 8082
+hm:
+  db:
+    database: hm-cart
+  swagger:
+    title: 购物车接口文档
+    package: com.hmall.cart.controller
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8090
+      http-method-specify: true #开启请求方式前缀
+feign:
+  sentinel:
+    enabled: true # 开启feign对sentinel的支持

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: cart-service #微服务名称 2023-11-04 7:36 wq
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 192.168.3.79:8848 #nacos地址 by 吴强
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: shared-jdbc.yaml
+          - data-id: shared-log.yaml
+          - data-id: shared-swagger.yaml
+          - data-id: shared-feign.yaml
+          - data-id: shared-seata.yaml

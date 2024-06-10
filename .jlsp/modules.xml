@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cart-service/.jlsp/cart-service.iml" filepath="$PROJECT_DIR$/cart-service/.jlsp/cart-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hm-api/.jlsp/hm-api.iml" filepath="$PROJECT_DIR$/hm-api/.jlsp/hm-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hm-common/.jlsp/hm-common.iml" filepath="$PROJECT_DIR$/hm-common/.jlsp/hm-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hm-gateway/.jlsp/hm-gateway.iml" filepath="$PROJECT_DIR$/hm-gateway/.jlsp/hm-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hm-service/.jlsp/hm-service.iml" filepath="$PROJECT_DIR$/hm-service/.jlsp/hm-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.jlsp/hmall.iml" filepath="$PROJECT_DIR$/.jlsp/hmall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/item-service/.jlsp/item-service.iml" filepath="$PROJECT_DIR$/item-service/.jlsp/item-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pay-service/.jlsp/pay-service.iml" filepath="$PROJECT_DIR$/pay-service/.jlsp/pay-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trade-service/.jlsp/trade-service.iml" filepath="$PROJECT_DIR$/trade-service/.jlsp/trade-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-service/.jlsp/user-service.iml" filepath="$PROJECT_DIR$/user-service/.jlsp/user-service.iml" />
+    </modules>
+  </component>
+</project>
