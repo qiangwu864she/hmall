@@ -26,6 +26,10 @@ spring:
           uri: lb://trade-service
           predicates:
             - Path=/orders/**
+        - id: pay-service
+          uri: lb://pay-service
+          predicates:
+            - Path=/pay-orders/**
       default-filters:
         - AddRequestHeader=Kris, wuqiang is Really handsome!
         - PrintAny=1,2,3

@@ -6,3 +6,11 @@ hm:
   swagger:
     title: 交易管理接口文档
     package: com.hmall.trade.controller
+  #添加Rabbitmq的地址等信息2024-6-22 17:06
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    virtual-host: /hmall
+    username: hmall
+    password: 123
