@@ -24,6 +24,7 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,55 @@ public class ElasticSearchTest {
         System.out.println("response = " + response);
 
         //4.解析结果
+        parseSearchResult(response);
+    }
+
+    @Test
+    void testMatchSearch() throws IOException {
+        //1.创建Request对象
+        SearchRequest searchRequest = new SearchRequest("items");
+
+        //2.组织DSL查询参数
+        searchRequest.source()
+                .query(QueryBuilders.boolQuery()
+                        .must(QueryBuilders.matchQuery("name","脱脂牛奶"))
+                        .filter(QueryBuilders.termQuery("brand","德亚"))
+                        .filter(QueryBuilders.rangeQuery("price").lt(10000))
+                );
+        //3.发送请求
+        SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println("response = " + response);
+
+        //4.解析结果
+        parseSearchResult(response);
+    }
+
+    @Test
+    void testSortAndPage() throws IOException {
+        //0.模拟前端传递的分页参数
+        int pageNo = 1 , pageSize = 5;
+
+        //1.创建Request对象
+        SearchRequest searchRequest = new SearchRequest("items");
+
+        //2.组织DSL查询参数
+        //2.1 query条件
+        searchRequest.source().query(QueryBuilders.matchAllQuery());
+        //2.2分页
+        searchRequest.source().from((pageNo - 1) * pageSize).size(pageSize);
+        //2.3排序
+        searchRequest.source()
+                .sort("sold", SortOrder.DESC)
+                .sort("price", SortOrder.ASC);
+        //3.发送请求
+        SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println("response = " + response);
+
+        //4.解析结果
+        parseSearchResult(response);
+    }
+
+    private static void parseSearchResult(SearchResponse response) {
         SearchHits searchHits = response.getHits();
         //4.1 总条数
         long value = searchHits.getTotalHits().value;
