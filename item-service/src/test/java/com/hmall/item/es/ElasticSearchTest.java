@@ -24,6 +24,8 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +35,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 //@SpringBootTest(properties = "spring.profiles.active=local")
 public class ElasticSearchTest {
@@ -99,6 +102,28 @@ public class ElasticSearchTest {
         parseSearchResult(response);
     }
 
+    @Test
+    void testHighlight() throws IOException {
+        //1.创建Request对象
+        SearchRequest searchRequest = new SearchRequest("items");
+
+        //2.组织DSL查询参数
+        //2.1 query条件
+        searchRequest.source().query(QueryBuilders.matchQuery("name","脱脂牛奶"));
+        //2.2 高亮条件
+        searchRequest.source().highlighter(SearchSourceBuilder.highlight()
+                .field("name")
+                .preTags("<em>") //高亮默认的标签就是<em>，所以这里也可以选择忽略 ---2024年7月7日 11:17
+                .postTags("</em>")
+        );
+        //3.发送请求
+        SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println("response = " + response);
+
+        //4.解析结果
+        parseSearchResult(response);
+    }
+
     private static void parseSearchResult(SearchResponse response) {
         SearchHits searchHits = response.getHits();
         //4.1 总条数
@@ -107,8 +132,19 @@ public class ElasticSearchTest {
         //4.2 命中的数据
         SearchHit[] hits = searchHits.getHits();
         for (SearchHit hit : hits) {
+            //4.2.1获取source结果
             String json = hit.getSourceAsString();
+            //4.2.2转为Itemdoc
             ItemDoc doc = JSONUtil.toBean(json, ItemDoc.class);
+            //4.3处理高亮结果--2024年7月7日
+            Map<String, HighlightField> hfs = hit.getHighlightFields();
+            if (hfs != null && !hfs.isEmpty()) {
+                //4.3.1根据高亮字段名获取高亮结果
+                HighlightField hf = hfs.get("name");
+                //4.3.2获取高亮结果，覆盖非高亮结果
+                String hfName = hf.getFragments()[0].string();
+                doc.setName(hfName);
+            }
             System.out.println("doc = " + doc);
         }
     }
