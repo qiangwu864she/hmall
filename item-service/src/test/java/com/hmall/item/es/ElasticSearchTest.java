@@ -24,6 +24,11 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
@@ -122,6 +127,32 @@ public class ElasticSearchTest {
 
         //4.解析结果
         parseSearchResult(response);
+    }
+
+    @Test
+    void testAgg() throws IOException {
+        //1.创建Request对象
+        SearchRequest searchRequest = new SearchRequest("items");
+
+        //2.组织DSL查询参数
+        //2.1 分页（不返回）
+        searchRequest.source().size(0);
+        //2.2 聚合条件
+        String brandAggName = "brandAgg";
+        searchRequest.source().aggregation(
+                AggregationBuilders.terms(brandAggName).field("brand").size(10));
+        //3.发送请求
+        SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println("response = " + response);
+
+        //4.解析结果
+        Aggregations aggregations = response.getAggregations();
+        Terms brandTerms = aggregations.get(brandAggName);
+        List<? extends Terms.Bucket> buckets = brandTerms.getBuckets();
+        for (Terms.Bucket bucket : buckets) {
+            System.out.println("brand: " + bucket.getKeyAsString());
+            System.out.println("count = " + bucket.getDocCount());
+        }
     }
 
     private static void parseSearchResult(SearchResponse response) {
